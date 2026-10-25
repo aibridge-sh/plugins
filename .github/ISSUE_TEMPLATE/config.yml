@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A bug or idea for the AI Bridge app itself
+    url: https://github.com/aibridge-sh/bridge/issues/new/choose
+    about: The app's own issue tracker.
+  - name: AI Bridge
+    url: https://aibridge.sh/?src=gh-plugins
+    about: What AI Bridge is, and the download.

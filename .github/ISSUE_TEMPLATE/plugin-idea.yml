@@ -1,0 +1,34 @@
+name: Suggest a plugin
+description: A system you'd like to see inside AI Bridge.
+title: "Plugin idea: "
+labels: [plugin-idea]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What should it show?
+      description: The system, and what you'd want to see from it at a glance.
+      placeholder: "Cloudflare: my zones, Workers and their errors today, and what this month costs so far."
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What would it save you?
+      description: What you do today instead, and what's annoying about it.
+  - type: input
+    id: access
+    attributes:
+      label: How do you reach it today?
+      description: A CLI, an API, or only a web console.
+      placeholder: "wrangler, and the dashboard"
+  - type: dropdown
+    id: build
+    attributes:
+      label: Would you build it?
+      options:
+        - No, it's just an idea
+        - Maybe, once the SDK is out
+        - Yes
+    validations:
+      required: true
