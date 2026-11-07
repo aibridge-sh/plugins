@@ -1,0 +1,284 @@
+{
+  "format": 2,
+  "version": "1.0.0",
+  "dialect": "view-data-v1",
+  "policy": {
+    "manifestVersion": 1,
+    "publisher": "AI Bridge",
+    "version": "1.0.0",
+    "engines": {
+      "bridge": ">=0.1.0",
+      "sdk": "^0.3.0"
+    },
+    "mark": "puzzle",
+    "credentials": {
+      "mezmo": {
+        "kind": "api-key",
+        "attach": {
+          "form": "authorization",
+          "scheme": "Token"
+        },
+        "origins": [
+          "https://api.mezmo.com",
+          "https://api.logdna.com"
+        ],
+        "connect": {
+          "label": "Service key",
+          "summary": "Search, filter and follow your Mezmo logs. You need a service key: in Mezmo, Settings › Organization › API Keys.",
+          "help": "https://app.mezmo.com"
+        }
+      }
+    },
+    "network": {
+      "hosts": [
+        {
+          "credential": "mezmo"
+        }
+      ],
+      "getPaths": [
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v2/export",
+          "reads": [
+            "search"
+          ],
+          "query": [
+            "from",
+            "to",
+            "size",
+            "prefer",
+            "query",
+            "apps",
+            "hosts",
+            "levels",
+            "pagination_id"
+          ]
+        },
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v1/config/view/{arg:view}",
+          "reads": [
+            "savedView"
+          ],
+          "query": []
+        },
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v1/config/view",
+          "reads": [
+            "views"
+          ],
+          "query": []
+        },
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v1/usage/apps",
+          "reads": [
+            "values"
+          ],
+          "query": [
+            "from",
+            "to"
+          ]
+        },
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v1/usage/hosts",
+          "reads": [
+            "values"
+          ],
+          "query": [
+            "from",
+            "to"
+          ]
+        },
+        {
+          "host": {
+            "credential": "mezmo"
+          },
+          "path": "/v1/usage/tags",
+          "reads": [
+            "values"
+          ],
+          "query": [
+            "from",
+            "to"
+          ]
+        }
+      ],
+      "readPosts": []
+    },
+    "links": {
+      "hosts": []
+    },
+    "id": "mezmo-logs",
+    "name": "Mezmo logs",
+    "description": "Search, filter and follow Mezmo Log Analysis lines by saved view, app, host, tag and level, and read each line in full. Unofficial integration; not affiliated with Mezmo.",
+    "contributes": {
+      "views": [
+        {
+          "id": "main",
+          "title": "Mezmo logs",
+          "place": "infra"
+        }
+      ]
+    },
+    "reads": {
+      "search": {
+        "risk": "content",
+        "scope": null,
+        "description": "Export one page of log lines for a time range and filters, with the expanded lines in full.",
+        "args": {
+          "range": {
+            "type": "string",
+            "enum": [
+              "15m",
+              "1h",
+              "24h",
+              "7d",
+              "custom"
+            ]
+          },
+          "from": {
+            "type": "number",
+            "integer": true,
+            "min": 0,
+            "max": 9999999999999,
+            "optional": true
+          },
+          "to": {
+            "type": "number",
+            "integer": true,
+            "min": 0,
+            "max": 9999999999999,
+            "optional": true
+          },
+          "query": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$",
+            "optional": true
+          },
+          "apps": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$",
+            "optional": true
+          },
+          "hosts": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$",
+            "optional": true
+          },
+          "levels": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[a-z,]*$",
+            "optional": true
+          },
+          "cursor": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^[\\x21-\\x7e]{1,512}$",
+            "optional": true
+          },
+          "tags": {
+            "type": "string",
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001f\\u007f]*$",
+            "optional": true
+          },
+          "open": {
+            "type": "string",
+            "maxLength": 215,
+            "pattern": "^[0-9a-f,-]{10,215}$",
+            "optional": true
+          }
+        }
+      },
+      "views": {
+        "risk": "inventory",
+        "scope": null,
+        "description": "List the saved views' names for the sidebar.",
+        "args": {}
+      },
+      "values": {
+        "risk": "inventory",
+        "scope": null,
+        "description": "List the app, host and tag names seen this week for the filter menus.",
+        "args": {}
+      },
+      "savedView": {
+        "risk": "inventory",
+        "scope": null,
+        "description": "Read one saved view's search and filters.",
+        "args": {
+          "view": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9_-]{1,64}$"
+          }
+        }
+      }
+    }
+  },
+  "id": "mezmo-logs",
+  "icon": "icon.png",
+  "skeleton": {
+    "title": "Everything",
+    "sidebar": true,
+    "list": {
+      "kind": "stream",
+      "title": "Log lines"
+    }
+  },
+  "writes": {
+    "createView": {
+      "credential": "mezmo",
+      "method": "POST",
+      "path": "/v1/config/view",
+      "label": "Save view to Mezmo",
+      "fields": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "query": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "apps": {
+          "type": "strings",
+          "maxItems": 20,
+          "maxLength": 512
+        },
+        "hosts": {
+          "type": "strings",
+          "maxItems": 20,
+          "maxLength": 512
+        },
+        "tags": {
+          "type": "strings",
+          "maxItems": 20,
+          "maxLength": 512
+        },
+        "levels": {
+          "type": "strings",
+          "maxItems": 20,
+          "maxLength": 512
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "mezmo-logs-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "bridge-plugin build ./package"
+  },
+  "dependencies": {
+    "@aibridge/sdk": "file:SDK_TARBALL",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@aibridge/plugin-tools": "file:TOOLS_TARBALL",
+    "typescript": "5.9.3"
+  }
+}

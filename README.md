@@ -1,71 +1,63 @@
-<p align="center">
-  <a href="https://aibridge.sh/?src=gh-plugins"><img src=".github/readme/hero.webp" width="100%" alt="AI Bridge Plugins, in progress. Every cloud beside your agents. AWS, Google Cloud and Azure first, then the plugins you build."></a>
-</p>
+# AI Bridge plugins
 
-<p align="center">
-  <b>See your clouds without leaving AI Bridge.</b><br>
-  What's running, what it costs and what's worth fixing, in the same window as your agents.
-</p>
+Signed community plugins for [AI Bridge](https://aibridge.sh/?src=gh-plugins),
+the Mac app that runs your coding agents side by side. A plugin adds a screen
+to AI Bridge for a service you use, such as your logs, and reads it through a
+connection you make.
 
-<p align="center">
-  <a href="https://aibridge.sh/?src=gh-plugins"><img src=".github/readme/get.png" height="44" alt="Get AI Bridge"></a>&nbsp;&nbsp;<a href="../../issues/new?template=plugin-idea.yml"><img src=".github/readme/suggest.png" height="44" alt="Suggest a plugin"></a>
-</p>
+AWS, Azure and Google Cloud are built-in plugins: they come with AI Bridge
+and update with the app, so they are not in this catalogue.
 
-<p align="center">
-  <sub>In development · tested on real accounts · read-only by design</sub>
-</p>
+## How plugins stay safe
 
-<br>
+- **Isolated.** Plugin code runs in a sandbox inside AI Bridge, with no
+  access to your files, browser, terminal or network of its own. AI Bridge
+  draws every screen from what the plugin describes.
+- **Your keys stay with AI Bridge.** You connect a service in AI Bridge. The
+  key is kept in your Mac's Keychain and attached by AI Bridge to each
+  request; the plugin never sees it.
+- **Declared sites only.** A plugin can reach only the addresses it declares,
+  and you see them before anything installs.
+- **Signed.** Every release is signed, and the catalogue that lists it is
+  signed by a key built into AI Bridge. A changed or unlisted file is refused.
+  A published version is never replaced; a revoked one stops running.
+- **Read-only where it can be.** Plugins read. A plugin that can change
+  something says so in its review, and every change is one you confirm.
 
-## The first three
+## Install
 
-<p align="center">
-  <img src=".github/readme/clouds.webp" width="100%" alt="The first three plugins. AWS: accounts with SSO, about 25 services, findings with console links. Google Cloud: projects, GKE and the core services. Azure: subscriptions and resource groups through Resource Graph.">
-</p>
+In AI Bridge, open **Plugins** in the top bar, or **Settings › Plugins ›
+Manage plugins**. Pick a plugin, check what it can reach, then install.
+Updates are offered there, never applied on their own.
 
-**AWS.** Every account in one home, SSO included, with favourites and real account names. About 25 services, from EC2, EKS and Lambda to S3, IAM, RDS and Route 53.
+## Plugins
 
-**Google Cloud.** Your projects, GKE and the core services.
-
-**Azure.** Subscriptions and resource groups, read through Resource Graph.
-
-## What you get
-
-🔎 **What's worth fixing.** Unused NAT gateways, unhealthy targets, access keys nobody has rotated. Each finding links straight to the right page in the console.
-
-💰 **Costs without surprises.** Free cost data wherever the provider offers it. Where a lookup is billed, like AWS Cost Explorer, AI Bridge shows the most it could cost and asks first. One click, one fetch, nothing on a schedule.
-
-🤖 **A second opinion from your own AI.** Your Claude Code or Codex reads a privacy-filtered snapshot and writes a report: what it found, a cost estimate, and commands ready to copy or run in AI Bridge's terminal.
-
-⚡ **Quick on big organisations.** Your home region loads first, blocked regions are spotted fast, and the counts fill in as they arrive.
-
-## Safe by design
-
-A plugin describes what it wants to see. AI Bridge does the reading.
-
-- **Your credentials stay yours.** Plugins never see them.
-- **Only where it says it goes.** A plugin can reach the hosts it declares, and nothing else.
-- **Read-only.** Plugins look. They don't change anything.
-- **Personal data is masked** before it reaches a plugin or the AI, unless you choose otherwise.
-
-## What's coming
-
-1. A plugin installer, with signed plugins.
-2. A published SDK, so anyone can build one.
-3. AWS, Google Cloud and Azure, released here as the first official plugins.
-
-To hear when each one lands: **Watch › Custom › Releases** at the top of this page.
+| Plugin | What it does |
+| --- | --- |
+| [Mezmo logs](plugins/mezmo-logs) | Search, filter and follow Mezmo Log Analysis lines. Unofficial integration; not affiliated with Mezmo. |
 
 ## Build your own
 
-The SDK isn't public yet. In the meantime, tell us what you'd want inside AI Bridge: a hosting provider, a CI service, an observability tool, anything with an API or a CLI. [Suggest a plugin](../../issues/new?template=plugin-idea.yml), and give a 👍 to the ideas you'd use. They decide what comes after the clouds.
+The plugin SDK is in preview and not published yet. When it is, its
+documentation and packages will be linked here. Until then,
+[`plugins/mezmo-logs`](plugins/mezmo-logs) shows what a plugin is: a
+`plugin.json` that declares its sites, reads and key, a `view.ts` that
+describes its screens and a `data.ts` that shapes what it reads.
 
-## About AI Bridge
+To ask for a plugin, [suggest one](../../issues/new?template=plugin-idea.yml).
 
-[AI Bridge](https://aibridge.sh/?src=gh-plugins) is a Mac app that runs Claude Code, Codex, Grok and OpenCode side by side, organised like a team. It's free to start. Releases and bug reports live in [aibridge-sh/bridge](https://github.com/aibridge-sh/bridge).
+## Report a security issue
 
-<br>
+Please report security issues privately to security@aibridge.sh, not
+in a public issue.
 
-<p align="center">
-  <sub>Made by CyberNucleus Pty Ltd, trading as AI Bridge sh.</sub>
-</p>
+## What is in this repository
+
+- `catalogue-v1.json`: the current signed catalogue. `catalogues/` keeps every
+  earlier one; their numbers only go up.
+- `trust/`: the catalogue's public key and the publisher's. AI Bridge has its
+  own copy; downloading these files does not make anything trusted.
+- `plugins/`: each plugin's source.
+- Releases: each plugin version's signed package.
+
+<sub>Made by CyberNucleus Pty Ltd, trading as AI Bridge sh.</sub>
